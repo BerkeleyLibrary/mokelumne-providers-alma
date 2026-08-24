@@ -1,0 +1,33 @@
+name: CI
+
+on: [push, pull_request]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version:
+                    - "3.13"
+                    - "3.14"
+
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Install uv
+              uses: astral-sh/setup-uv@v7
+              with:
+                  version: "0.10.7"
+                  python-version: ${{ matrix.python-version }}
+                  enable-cache: true
+
+            - name: Sync dependencies
+              run: uv sync --all-extras --dev
+
+            - name: Lint with pylint
+              run: uv run pylint mokelumne test
+
+            - name: Type-check with mypy
+              run: uv run mypy mokelumne test
+
+            - name: Run tests
+              run: uv run pytest

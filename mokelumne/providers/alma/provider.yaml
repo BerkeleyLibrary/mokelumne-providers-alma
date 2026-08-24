@@ -1,0 +1,20 @@
+package-name: mokelumne-providers-alma
+name: Alma
+description: Alma Airflow provider.
+connection-types:
+  - connection-type: alma
+    hook-class-name: mokelumne.providers.alma.hooks.alma.AlmaHook
+    hook-name: Alma
+    ui-field-behaviour:
+      hidden-fields:
+        - port
+        - schema
+        - extra
+        - password
+      relabeling:
+        # TODO: set the correct labels for Alma connection fields
+        host: Alma SRU Base URL
+        login: Alma API Key
+      placeholders:
+        host: "https://berkeley.alma.exlibrisgroup.com/view/sru/01UCS_BER"
+        login: "your-alma-api-key"

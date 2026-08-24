@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mokelumne-providers-alma"
+version = "1.0.0"
+dependencies = [
+    "apache-airflow-task-sdk >= 1.3.1, < 2",
+    "requests",
+    # TODO: add Alma-specific client or HTTP library dependencies here
+    # e.g. "requests", or an ExLibris Alma API client package
+]
+requires-python = ">= 3.13, < 3.15"
+authors = [
+    {name = "Jason Raitz"},
+    {name = "Steve Sullivan"},
+]
+readme = "README.md"
+license = "MIT"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+lint = [
+    "mypy ~= 1.17.1",
+    "pydoclint ~= 0.6.10",
+    "pylint ~= 3.3",
+    "types-PyYAML",
+]
+
+[project.urls]
+Repository = "https://github.com/BerkeleyLibrary/mokelumne-providers-alma"
+Issues = "https://github.com/BerkeleyLibrary/mokelumne-providers-alma/issues"
+
+[project.entry-points."apache_airflow_provider"]
+provider_info = "mokelumne.providers.alma.get_provider_info:get_provider_info"
+
+[tool.mypy]
+python_version = "3.13"
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_return_any = true
+
+[tool.setuptools.packages.find]
+include = ['mokelumne*']
+
+[tool.setuptools.package-data]
+"mokelumne.providers.alma" = ["provider.yaml"]
+
+[tool.pydoclint]
+allow-init-docstring = true
+skip-checking-raises = true
+style = "sphinx"
+arg-type-hints-in-docstring = false
+check-class-attributes = false
+
+[tool.pylint.messages_control]
+disable = ["expression-not-assigned", "pointless-statement", "too-many-statements", "too-few-public-methods"]
+
+[tool.pytest]
+minversion = "9.0"
+addopts = [
+    "-v",
+    "-s",
+    "--junit-xml=artifacts/pytest/airflow_test.xml",
+    "--cov-report=term",
+    "--cov-report=html:artifacts/coverage",
+    "--cov=mokelumne",
+]
+markers = [
+    "unit: fast isolated unit tests with no external dependencies",
+]

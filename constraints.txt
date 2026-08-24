@@ -1,0 +1,13 @@
+# Upper bounds derived from the base Airflow image (apache/airflow:3.3.1).
+# Regenerate when bumping AIRFLOW_VERSION:
+#   docker run --rm --entrypoint python apache/airflow:<version> -m pip freeze
+# then update bounds here to match.
+apache-airflow-providers-common-compat >= 1.18.0
+click >= 8.4.2
+cryptography >= 49, < 51
+fsspec == 2026.7.0
+flask-appbuilder == 5.2.2
+grpcio >= 1.83.0
+importlib-metadata < 9
+opentelemetry-sdk == 1.44.0
+starlette >= 1.5.0
