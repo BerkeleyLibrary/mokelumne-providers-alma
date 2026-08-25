@@ -4,12 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mokelumne-providers-alma"
-version = "1.0.0"
+version = "0.1.0"
 dependencies = [
     "apache-airflow-task-sdk >= 1.3.1, < 2",
     "requests",
-    # TODO: add Alma-specific client or HTTP library dependencies here
-    # e.g. "requests", or an ExLibris Alma API client package
 ]
 requires-python = ">= 3.13, < 3.15"
 authors = [

@@ -36,22 +36,22 @@ jobs:
                       dist/
                       !dist/.gitignore
 
-    # pypi-publish:
-    #     needs: build
-    #     runs-on: ubuntu-latest
-    #     environment:
-    #         name: pypi
-    #         url: https://pypi.org/p/mokelumne-providers-alma
-    #     permissions:
-    #         id-token: write
-    #     steps:
-    #         - uses: actions/checkout@v6
+    pypi-publish:
+        needs: build
+        runs-on: ubuntu-latest
+        environment:
+            name: pypi
+            url: https://pypi.org/p/mokelumne-providers-alma
+        permissions:
+            id-token: write
+        steps:
+            - uses: actions/checkout@v6
 
-    #         - name: Download built package distributions
-    #           uses: actions/download-artifact@v8
-    #           with:
-    #               name: python-package-distributions
-    #               path: dist/
+            - name: Download built package distributions
+              uses: actions/download-artifact@v8
+              with:
+                  name: python-package-distributions
+                  path: dist/
 
-    #         - name: Public package distributions to PyPI
-    #           uses: pypa/gh-action-pypi-publish@release/v1
+            - name: Public package distributions to PyPI
+              uses: pypa/gh-action-pypi-publish@release/v1

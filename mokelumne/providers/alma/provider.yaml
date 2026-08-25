@@ -12,7 +12,7 @@ connection-types:
         - extra
         - password
       relabeling:
-        # TODO: set the correct labels for Alma connection fields
+        # TODO: update with jwt auth if/when API implemented
         host: Alma SRU Base URL
         login: Alma API Key
       placeholders:
