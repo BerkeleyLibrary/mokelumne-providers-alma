@@ -108,7 +108,7 @@ class AlmaHook(BaseHook):
 def _first_marc_record(sru_xml: str) -> str:
     """Return the first MARC record from an Alma SRU response.
 
-    :param sru_xml: Raw SRU response XML string.
+    :param str sru_xml: Raw SRU response XML string.
     :returns: The first MARC XML record as a string.
     :rtype: str
     :raises AirflowException: If the XML cannot be parsed or contains no MARC
