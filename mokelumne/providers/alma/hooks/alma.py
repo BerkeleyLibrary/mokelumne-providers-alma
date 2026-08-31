@@ -78,7 +78,7 @@ class AlmaHook(BaseHook):
     def get_record_by_mms_id(self, mmsid: str) -> str:
         """Return a single MARC XML record from the *mmsid*.
 
-        :param mmsid: An 18-digit Alma MMSID.
+        :param str mmsid: An 18-digit Alma MMSID.
         :returns: The MARC XML record as a string.
         :rtype: str
         :raises AirflowException: If *mmsid* is invalid, the HTTP request
