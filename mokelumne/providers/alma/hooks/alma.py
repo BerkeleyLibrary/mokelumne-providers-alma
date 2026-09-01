@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 import re
 from functools import cached_property
-from urllib.parse import urlencode
 from xml.etree import ElementTree as ET
 
 import requests
@@ -101,7 +100,7 @@ class AlmaHook(BaseHook):
     def get_record_by_mms_id(self, mmsid: str) -> str:
         """Return a single MARC XML record from the *mmsid*.
 
-        :param str mmsid: An 18-digit Alma MMSID.
+        :param mmsid: An 18-digit Alma MMSID.
         :returns: The MARC XML record as a string.
         :rtype: str
         :raises AlmaValidationError: If *mmsid* is not a valid 18-digit MMSID.
@@ -125,7 +124,7 @@ class AlmaHook(BaseHook):
 def _first_marc_record(sru_xml: str) -> str:
     """Return the first MARC record from an Alma SRU response.
 
-    :param str sru_xml: Raw SRU response XML string.
+    :param sru_xml: Raw SRU response XML string.
     :returns: The first MARC XML record as a string.
     :rtype: str
     :raises AlmaResponseError: If the XML cannot be parsed, contains no MARC
@@ -137,14 +136,15 @@ def _first_marc_record(sru_xml: str) -> str:
     except ET.ParseError as exc:
         raise AlmaResponseError(f"Could not parse Alma SRU response: {exc}") from exc
 
-    # error response contains xmlns:diag namespace and <diagnostics> element
-    # <diagnostics> contains a <diagnostic> element, with <uri> and <message>
-    if root.find(f".//{{{_SRU_NS_DIAG}}}diagnostics") is not None:
-        diag = root.find(f".//{{{_SRU_NS_DIAG}}}diagnostic")
+    diagnostics = root.find(f".//{{{_SRU_NS}}}diagnostics")
+    if diagnostics is not None:
+        diag = diagnostics.find(f".//{{{_SRU_NS_DIAG}}}diagnostic")
         uri = diag.findtext(f".//{{{_SRU_NS_DIAG}}}uri") if diag is not None else None
         message = (
             diag.findtext(f".//{{{_SRU_NS_DIAG}}}message") if diag is not None else None
         )
+        if uri is None or message is None:
+            raise AlmaResponseError("Alma SRU unspecified response error")
         raise AlmaResponseError(f"Alma SRU error {uri}: {message}")
 
     number_text = root.findtext(f".//{{{_SRU_NS}}}numberOfRecords")
