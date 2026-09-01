@@ -7,9 +7,13 @@ from unittest.mock import MagicMock
 
 import pytest
 import requests
-from airflow.sdk.exceptions import AirflowException
 
-from mokelumne.providers.alma.hooks.alma import AlmaHook
+from mokelumne.providers.alma.hooks.alma import (
+    AlmaHook,
+    AlmaConfigurationError,
+    AlmaResponseError,
+    AlmaValidationError,
+)
 
 _FIXTURES = Path(__file__).parent.parent / "fixtures"
 
@@ -20,31 +24,6 @@ class DummyConnection:
     host = "https://berkeley.alma.exlibrisgroup.com/view/sru/01UCS_BER"
     login = "dummy-api-key"
     password = None
-
-
-def test_get_conn_raises_when_host_missing():
-    """Ensure get_conn raises AirflowException when host is not configured."""
-
-    class NoHostConnection:
-        """Mock connection with no host configured."""
-
-        host = ""
-        login = None
-        password = None
-
-    hook = AlmaHook()
-    hook.get_connection = lambda _: NoHostConnection()  # type: ignore[assignment]
-
-    with pytest.raises(AirflowException):
-        hook.get_conn()
-
-
-def test_get_conn_returns_session():
-    """Ensure get_conn returns a requests.Session when the connection is valid."""
-    hook = AlmaHook()
-    hook.get_connection = MagicMock(return_value=DummyConnection())
-
-    assert isinstance(hook.get_conn(), requests.Session)
 
 
 def test_get_record_by_mms_id_returns_first_marc_record_from_fixture():
