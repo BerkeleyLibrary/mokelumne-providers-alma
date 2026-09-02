@@ -20,3 +20,29 @@ uv pip compile pyproject.toml --extra test -c constraints.txt \
 ```sh
 docker run --rm --entrypoint python apache/airflow:<version> -m pip freeze
 ```
+
+## Development
+
+### Testing / Linting
+
+Use `uv` to run tests and linting in a reproducible environment:
+
+Install dependencies:
+
+```sh
+uv pip install -e ".[test,lint]" -c constraints.txt
+```
+
+Run tests:
+
+```sh
+uv pytest -v
+```
+
+Run linting:
+
+```sh
+uv run pylint mokelumne/providers/alma tests/unit
+uv run mypy mokelumne/providers/alma tests/unit
+uv run pydoclint mokelumne/providers/alma tests/unit
+```
